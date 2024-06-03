@@ -32,17 +32,17 @@ fn main() {
         let headers: Vec<_> = header.split(',').collect();
         let c = "|c".repeat(headers.len());
 
-        println!("\\begin{{tabular}}{{{c}|}}\n\\hline");
+        println!("\\begin{{tabular}}{{{c}|}}\n    \\hline");
 
         let header = headers.join(" & ");
 
-        println!("{header} \\\\\n\\hline");
+        println!("    {header} \\\\\n    \\hline");
 
         for line in lines {
             let line: Vec<_> = line.split(',').collect();
             let row = line.join(" & ");
 
-            println!("{row} \\\\\n\\hline");
+            println!("    {row} \\\\\n    \\hline");
         }
 
         println!("\\end{{tabular}}");
