@@ -24,5 +24,27 @@ fn main() {
         process::exit(1);
     });
 
-    dbg!(file_contents);
+    let mut lines = file_contents.lines();
+
+    let header = lines.next();
+
+    if let Some(header) = header {
+        let headers: Vec<_> = header.split(',').collect();
+        let c = "|c".repeat(headers.len());
+
+        println!("\\begin{{tabular}}{{{c}|}}\n\\hline");
+
+        let header = headers.join(" & ");
+
+        println!("{header} \\\\\n\\hline");
+
+        for line in lines {
+            let line: Vec<_> = line.split(',').collect();
+            let row = line.join(" & ");
+
+            println!("{row} \\\\\n\\hline");
+        }
+
+        println!("\\end{{tabular}}");
+    }
 }
