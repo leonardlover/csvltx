@@ -40,7 +40,7 @@ fn main() {
 
         println!("\\begin{{tabular}}{{{c}|}}\n    \\hline");
 
-        println!("    \\multicolumn{{{}}}{{|c|}}{{{}}}", headers.len(), file_name);
+        println!("    \\multicolumn{{{}}}{{|c|}}{{{}}} \\\\\n    \\hline", headers.len(), file_name);
 
         let header = headers.join(" & ");
 
