@@ -4,13 +4,19 @@ use std::process;
 
 fn config(
     mut args: impl Iterator<Item = String>,
-) -> Result<String, &'static str> {
+) -> Result<(String, String), &'static str> {
     args.next();
 
     match args.next() {
         Some(arg) => {
-            match fs::read_to_string(arg) {
-                Ok(contents) => Ok(contents),
+            match fs::read_to_string(&arg) {
+                Ok(contents) => {
+                    let mut name: Vec<_> = arg.split('.').collect();
+                    name.pop();
+                    let name = name.join(".");
+
+                    Ok((contents, name))
+                },
                 _ => Err("Could not open file"),
             }
         },
@@ -19,7 +25,7 @@ fn config(
 }
 
 fn main() {
-    let file_contents = config(env::args()).unwrap_or_else(|err| {
+    let (file_contents, file_name) = config(env::args()).unwrap_or_else(|err| {
         eprintln!("Problem parsing arguments: {err}");
         process::exit(1);
     });
@@ -33,6 +39,8 @@ fn main() {
         let c = "|c".repeat(headers.len());
 
         println!("\\begin{{tabular}}{{{c}|}}\n    \\hline");
+
+        println!("    \\multicolumn{{{}}}{{|c|}}{{{}}}", headers.len(), file_name);
 
         let header = headers.join(" & ");
 
