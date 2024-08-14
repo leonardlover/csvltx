@@ -35,14 +35,14 @@ fn main() {
     let header = lines.next();
 
     if let Some(header) = header {
-        let headers: Vec<_> = header.split(',').collect();
+        let headers: Vec<_> = header.split(',').map(|h| format!("\\texttt{{{}}}", h)).collect();
         let c = "|c".repeat(headers.len());
 
         println!("\\begin{{tabular}}{{{c}|}}\n    \\hline");
 
-        println!("    \\multicolumn{{{}}}{{|c|}}{{{}}} \\\\\n    \\hline", headers.len(), file_name);
+        println!("    \\multicolumn{{{}}}{{|c|}}{{\\texttt{{{}}}}} \\\\\n    \\hline", headers.len(), file_name.replace('_', "\\_"));
 
-        let header = headers.join(" & ");
+        let header = headers.join(" & ").replace('_', "\\_");
 
         println!("    {header} \\\\\n    \\hline");
 
